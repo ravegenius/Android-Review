@@ -206,7 +206,6 @@ G1的新生代收集跟 ParNew 类似，当新生代占用达到一定比例的�
 
 - **TODO ParNew收集器**
 
-
 ### 内存模型与回收策略
 ![](https://mmbiz.qpic.cn/mmbiz_png/qdzZBE73hWsbhfAng9ibqfcbjrqgyRWqAKiaJ2U75SGYwQhs2tuNbXtu8KIpaUsBOaHRKXf7esuuFoMjELFxibIVg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
@@ -227,8 +226,8 @@ Survivor 区相当于是 Eden 区和 Old 区的一个缓冲，类似于我们交
 
 ************************************************************************************************************************************************
 
-# Java基础
-## equals 方法
+# Java基础 TODO随时扩展
+## equals 方法 TODO扩展说明
 对两个对象的地址值进行的比较（即比较引用是否相同）
 ```java
 public boolean equals(Object obj) {
@@ -279,7 +278,7 @@ public int hashCode() {
 - final 关键字提高了性能，JVM 和 Java 应用都会缓存 final 变量，会对方法、变量及类进行优化
 - 方法的内部类访问方法中的局部变量，但必须用 final 修饰才能访问
 
-# String、StringBuffer、StringBuilder
+# String、StringBuffer、StringBuilder TODO线程安全非安全说明
 - String 是 final 类，不能被继承。对于已经存在的 Stirng 对象，修改它的值，就是重新创建一个对象
 - StringBuffer 是一个类似于 String 的字符串缓冲区，使用 append() 方法修改 Stringbuffer 的值，使用 toString() 方法转换为字符串，是线程安全的
 - StringBuilder 用来替代于 StringBuffer，StringBuilder 是非线程安全的，速度更快
@@ -328,7 +327,7 @@ public int hashCode() {
 - 接口中的所有属性默认为：public static final ****；
 - 接口中的所有方法默认为：public abstract ****；
 
-# 集合框架
+# 集合框架 TODO 重点丰富
 ![](https://user-gold-cdn.xitu.io/2019/6/23/16b833f4a86db5e6?w=643&h=611&f=gif&s=22445)
 - List接口存储一组不唯一，有序（插入顺序）的对象, Set接口存储一组唯一，无序的对象。
 
@@ -339,6 +338,9 @@ public int hashCode() {
 
 - **JDK 1.8 HashMap 结构图**
 ![](https://user-gold-cdn.xitu.io/2018/7/23/164c47f32f9650ba?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+
+### HashMap源码解析（JDK1.7和JDK1.8）
+https://blog.csdn.net/tree_ifconfig/article/details/81182940
 
 ### HashMap 的工作原理
 HashMap 基于 hashing 原理，我们通过 put() 和 get() 方法储存和获取对象。当我们将键值对传递给 put() 方法时，它调用键对象的 hashCode() 方法来计算 hashcode，让后找到 bucket 位置来储存 Entry 对象。当两个对象的 hashcode 相同时，它们的 bucket 位置相同，‘碰撞’会发生。因为 HashMap 使用链表存储对象，这个 Entry 会存储在链表中，当获取对象时，通过键对象的 equals() 方法找到正确的键值对，然后返回值对象。
@@ -406,7 +408,7 @@ public class Hashtable<K,V>
 ```
 
 ## ConcurrentHashMap
-### Base 1.7
+### Base 1.7 TODO Segment、自旋锁
 
 ConcurrentHashMap 最外层不是一个大的数组，而是一个 Segment 的数组。每个 Segment 包含一个与 HashMap 数据结构差不多的链表数组。
 
@@ -414,7 +416,7 @@ ConcurrentHashMap 最外层不是一个大的数组，而是一个 Segment 的�
 
 在读写某个 Key 时，先取该 Key 的哈希值。并将哈希值的高 N 位对 Segment 个数取模从而得到该 Key 应该属于哪个Segment，接着如同操作 HashMap 一样操作这个 Segment。
 
-Segment 继承自 ReentrantLock，可以很方便的对每一个 Segmen 上锁。
+Segment 继承自 ReentrantLock，可以很方便的对每一个 Segment 上锁。
 
 对于读操作，获取 Key 所在的 Segment 时，需要保证可见性。具体实现上可以使用volatile关键字，也可使用锁。但使用锁开销太大，而使用volatile时每次写操作都会让所有CPU内缓存无效，也有一定开销。ConcurrentHashMap 使用如下方法保证可见性，取得最新的Segment：
 ```java
@@ -433,7 +435,7 @@ HashEntry<K,V> e = (HashEntry<K,V>) UNSAFE.getObjectVolatile
 
 这里使用自旋锁是因为自旋锁的效率比较高，但是它消耗 CPU 资源比较多，因此在自旋次数超过阈值时切换为互斥锁。
 
-### Base 1.8  
+### Base 1.8 TODO CAS
 1.7 已经解决了并发问题，并且能支持 N 个 Segment 这么多次数的并发，但依然存在 HashMap 在 1.7 版本中的问题：查询遍历链表效率太低。因此 1.8 做了一些数据结构上的调整。
 
 ![](https://user-gold-cdn.xitu.io/2018/7/23/164c47f3756eb206?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
@@ -782,7 +784,8 @@ public class CustomManager{
 | 状态 | 说明 
 |--|--
 | New | 新创建了一个线程对象，但还没有调用start()方法。
-| Runnable | Ready 状态 线程对象创建后，其他线程(比如 main 线程）调用了该对象的 start() 方法。该状态的线程位于可运行线程池中，等待被线程调度选中 获取 cpu 的使用权。Running 绪状态的线程在获得 CPU 时间片后变为运行中状态（running）。
+| Ready | Ready 状态 线程对象创建后，其他线程(比如 main 线程）调用了该对象的 start() 方法。该状态的线程位于可运行线程池中，等待被线程调度选中 获取 cpu 的使用权。
+| Running | Running 绪状态的线程在获得 CPU 时间片后变为运行中状态（running）。
 | Blocked | 线程因为某种原因放弃了cpu 使用权（等待锁），暂时停止运行
 | Waiting | 线程进入等待状态因为以下几个方法：<br>- Object#wait()<br>- Thread#join()<br>- LockSupport#park()
 | Timed Waiting | 有等待时间的等待状态。
@@ -795,7 +798,7 @@ public class CustomManager{
 
 | 方法 | 说明
 |--|--
-| ``wait()`` | 线程状态由 的使用权。Running 变为 Waiting, 并将当前线程放入等待队列中
+| ``wait()`` | 线程状态由 Running 变为 Waiting, 并将当前线程放入等待队列中
 | ``notify()`` | notify() 方法是将等待队列中一个等待线程从等待队列移动到同步队列中
 | ``notifyAll() `` | 则是将所有等待队列中的线程移动到同步队列中
 
@@ -810,7 +813,7 @@ public class CustomManager{
 ``yield()`` 方法会临时暂停当前正在执行的线程，来让有同样优先级的正在等待的线程有机会执行。如果没有正在等待的线程，或者所有正在等待的线程的优先级都比较低，那么该线程会继续运行。执行了yield方法的线程什么时候会继续运行由线程调度器来决定。
 
 
-# volatile
+# volatile TODO 更详细的原理
 当把变量声明为 volatile 类型后，编译器与运行时都会注意到这个变量是共享的，因此不会将该变量上的操作与其他内存操作一起重排序。volatile 变量不会被缓存在寄存器或者对其他处理器不可见的地方，JVM 保证了每次读变量都从内存中读，跳过 CPU cache 这一步，因此在读取 volatile 类型的变量时总会返回最新写入的值。
 
 ![](https://user-gold-cdn.xitu.io/2019/6/23/16b833f4a48b216e?w=550&h=429&f=png&s=21448)
@@ -822,7 +825,9 @@ public class CustomManager{
 
 AtomicInteger 中主要实现了整型的原子操作，防止并发情况下出现异常结果，其内部主要依靠 JDK 中的 unsafe 类操作内存中的数据来实现的。volatile 修饰符保证了 value 在内存中其他线程可以看到其值得改变。CAS（Compare and Swap）操作保证了 AtomicInteger 可以安全的修改value 的值。
 
-# synchronized
+# Atomic TODO
+
+# synchronized TODO 互斥锁
 当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码。
 
 在 Java 中，每个对象都会有一个 monitor 对象，这个对象其实就是 Java 对象的锁，通常会被称为“内置锁”或“对象锁”。类的对象可以有多个，所以每个对象有其独立的对象锁，互不干扰。针对每个类也有一个锁，可以称为“类锁”，类锁实际上是通过对象锁实现的，即类的 Class 对象锁。每个类只有一个 Class 对象，所以每个类只有一个类锁。
@@ -839,7 +844,7 @@ Monitor 是线程私有的数据结构，每一个线程都有一个可用 monit
 - synchronized(类.class) {}  
 - 修饰静态方法
 
-## 原理
+## 原理 TODO
 **同步代码块：**
 - monitorenter 和 monitorexit 指令实现的
 
@@ -873,7 +878,7 @@ public interface Lock {
 
 而乐观锁认为自己在使用数据时不会有别的线程修改数据，所以不会添加锁，只是在更新数据的时候去判断之前有没有别的线程更新了这个数据。如果这个数据没有被更新，当前线程将自己修改的数据成功写入。如果数据已经被其他线程更新，则根据不同的实现方式执行不同的操作（例如报错或者自动重试）。乐观锁在 Java 中是通过使用无锁编程来实现，最常采用的是 CAS 算法，Java 原子类中的递增操作就通过 CAS 自旋实现。乐观锁适合读操作多的场景，不加锁的特点能够使其读操作的性能大幅提升。
 
-### 自旋锁、适应性自旋锁
+### 自旋锁、适应性自旋锁 TODO
 阻塞或唤醒一个 Java 线程需要操作系统切换 CPU 状态来完成，这种状态转换需要耗费处理器时间。如果同步代码块中的内容过于简单，状态转换消耗的时间有可能比用户代码执行的时间还要长。
 
 在许多场景中，同步资源的锁定时间很短，为了这一小段时间去切换线程，线程挂起和恢复现场的花费可能会让系统得不偿失。如果物理机器有多个处理器，能够让两个或以上的线程同时并行执行，我们就可以让后面那个请求锁的线程不放弃CPU的执行时间，看看持有锁的线程是否很快就会释放锁。
@@ -888,7 +893,7 @@ public interface Lock {
 当前线程拥有其他线程需要的资源，当前线程等待其他线程已拥有的资源，都不放弃自己拥有的资源。
 
 # 引用类型
-强引用 > 软引用 > 弱引用 
+强引用 > 软引用 > 弱引用 > 虚引用
 
 | 引用类型 | 说明 |
 |------|------|
@@ -897,7 +902,7 @@ public interface Lock {
 | SoftReference（软引用）| 如果一个对象只具有软引用，若内存空间足够，垃圾回收器就不会回收它；如果内存空间不足了，才会回收这些对象的内存|
 | PhantomReference（虚引用） | 一个只被虚引用持有的对象可能会在任何时候被 GC 回收。虚引用对对象的生存周期完全没有影响，也无法通过虚引用来获取对象实例，仅仅能在对象被回收时，得到一个系统通知（只能通过是否被加入到 ReferenceQueue 来判断是否被GC，这也是唯一判断对象是否被 GC 的途径）。|
 
-# 动态代理
+# 动态代理 TODO 加强了解
 
 示例：
 
@@ -1075,7 +1080,7 @@ public static byte[] generateProxyClass(final String name,
 }
 ```
 
-# 元注解
+# 元注解 TODO 再丰富丰富
 @Retention：保留的范围，可选值有三种。
 
 | RetentionPolicy | 说明
