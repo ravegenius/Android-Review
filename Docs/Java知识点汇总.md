@@ -1,32 +1,33 @@
 - [JVM](#jvm)
-  - [JVM 工作流程](#jvm-工作流程)
-  - [运行时数据区（Runtime Data Area）](#运行时数据区runtime-data-area)
+  - [JVM 工作流程](#jvm-工作流程) TODO
+  - [运行时数据区（Runtime Data Area）](#运行时数据区runtime-data-area) TODO
     - [程序计数器](#程序计数器)
     - [Java 虚拟机栈](#java-虚拟机栈)
     - [本地方法栈](#本地方法栈)
     - [Java 堆](#java-堆)
     - [方法区](#方法区)
-  - [方法指令](#方法指令)
-  - [类加载器](#类加载器)
+  - [方法指令](#方法指令) TODO
+  - [类加载器](#类加载器) TODO
   - [垃圾回收 gc](#垃圾回收-gc)
     - [对象存活判断](#对象存活判断)
     - [垃圾收集算法](#垃圾收集算法)
-    - [垃圾收集器](#垃圾收集器)
+    - [垃圾收集器](#垃圾收集器) TODO ParNew垃圾收集器
     - [内存模型与回收策略](#内存模型与回收策略)
-- [Java基础](#Java基础)
+- [Java基础](#Java基础) TODO随时扩展
   - [equals 方法](#equals-方法)
   - [hashCode 方法](#hashcode-方法)
 - [static](#static)
 - [final](#final)
-- [String、StringBuffer、StringBuilder](#stringstringbufferstringbuilder)
+- [String、StringBuffer、StringBuilder](#stringstringbufferstringbuilder) TODO线程安全非安全说明
 - [异常处理](#异常处理)
 - [内部类](#内部类)
   - [匿名内部类](#匿名内部类)
 - [多态](#多态)
 - [抽象和接口](#抽象和接口)
-- [集合框架](#集合框架)
+- [集合框架](#集合框架) TODO
   - [HashMap](#hashmap)
     - [结构图](#结构图)
+    - [HashMap 源码解析（JDK1.7 和 JDK1.8）](#HashMap源码解析（JDK1.7和JDK1.8)
     - [HashMap 的工作原理](#hashmap-的工作原理)
     - [HashMap 与 HashTable 对比](#hashmap-与-hashtable-对比)
   - [ConcurrentHashMap](#concurrenthashmap)
@@ -44,14 +45,15 @@
   - [属性](#属性)
   - [状态](#状态)
   - [状态控制](#状态控制)
-- [volatile](#volatile)
-- [synchronized](#synchronized)
+- [Volatile](#Volatile) TODO
+- [Atomic](#Atomic) TODO
+- [Synchronized](#Synchronized) TODO
   - [根据获取的锁分类](#根据获取的锁分类)
   - [原理](#原理)
 - [Lock](#lock)
   - [锁的分类](#锁的分类)
-    - [悲观锁、乐观锁](#悲观锁乐观锁)
-    - [自旋锁、适应性自旋锁](#自旋锁适应性自旋锁)
+    - [悲观锁、乐观锁](#悲观锁乐观锁)TODO
+    - [自旋锁、适应性自旋锁](#自旋锁适应性自旋锁)TODO
     - [死锁](#死锁)
 - [引用类型](#引用类型)
 - [动态代理](#动态代理)
@@ -128,8 +130,6 @@ Java堆是垃圾收集器管理的主要区域，从内存回收的角度来看�
 | 可见性机制 | 子类加载器可以看到父类加载器加载的类，而反之则不行 |
 | 单一性机制 | 父加载器加载过的类不能被子加载器加载第二次 |
 
-### TODO 类加载流程
-
 ## 垃圾回收 gc
 ### 对象存活判断
 - **引用计数**
@@ -141,10 +141,10 @@ Java堆是垃圾收集器管理的主要区域，从内存回收的角度来看�
 从 GC Roots 开始向下搜索，搜索所走过的路径称为引用链。当一个对象到 GC Roots 没有任何引用链相连时，则证明此对象是不可用的。不可达对象。
 
 > 在Java语言中，GC Roots包括：
-> - 虚拟机栈中引用的对象。
+> - Java 虚拟机栈中引用的对象。
+> - 本地方法栈中 JNI 引用的对象。
 > - 方法区中类静态属性实体引用的对象。
 > - 方法区中常量池引用的对象。
-> - 本地方法栈中 JNI 引用的对象。
 
 真正宣告一个对象死亡，至少要经历两次标记过程：
 1. 第一次标记 如果对象在进行可达性分析后发现是不可达的，那么就会进行第一次标记，随后进行一次筛选，筛选的条件是这个对象是否有必要执行finalize()方法。假如对象没有覆盖finalize()方法，或者finalize()方法已经被虚拟机调用过，那么虚拟机会视为“没有必要执行”，直接回收对象。否则，该对象将会被放置在一个名为F-Queue的队列之中，并在稍后由一条由虚拟机自动建立的、低调度优先级的Finalizer线程去执行它们的finalize()方法。
@@ -339,7 +339,7 @@ public int hashCode() {
 - **JDK 1.8 HashMap 结构图**
 ![](https://user-gold-cdn.xitu.io/2018/7/23/164c47f32f9650ba?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
-### HashMap源码解析（JDK1.7和JDK1.8）
+### HashMap 源码解析（JDK1.7 和 JDK1.8）
 https://blog.csdn.net/tree_ifconfig/article/details/81182940
 
 ### HashMap 的工作原理
@@ -785,8 +785,8 @@ public class CustomManager{
 |--|--
 | New | 新创建了一个线程对象，但还没有调用start()方法。
 | Ready | Ready 状态 线程对象创建后，其他线程(比如 main 线程）调用了该对象的 start() 方法。该状态的线程位于可运行线程池中，等待被线程调度选中 获取 cpu 的使用权。
-| Running | Running 绪状态的线程在获得 CPU 时间片后变为运行中状态（running）。
-| Blocked | 线程因为某种原因放弃了cpu 使用权（等待锁），暂时停止运行
+| Running | Running 绪状态的线程在获得 CPU 的使用权后变为运行中状态。
+| Blocked | 线程因为某种原因放弃了cpu 使用权（等待锁），暂时停止运行。
 | Waiting | 线程进入等待状态因为以下几个方法：<br>- Object#wait()<br>- Thread#join()<br>- LockSupport#park()
 | Timed Waiting | 有等待时间的等待状态。
 | Terminated | 表示该线程已经执行完毕。
@@ -813,7 +813,7 @@ public class CustomManager{
 ``yield()`` 方法会临时暂停当前正在执行的线程，来让有同样优先级的正在等待的线程有机会执行。如果没有正在等待的线程，或者所有正在等待的线程的优先级都比较低，那么该线程会继续运行。执行了yield方法的线程什么时候会继续运行由线程调度器来决定。
 
 
-# volatile TODO 更详细的原理
+# Volatile TODO 更详细的原理 原子性 Atomic
 当把变量声明为 volatile 类型后，编译器与运行时都会注意到这个变量是共享的，因此不会将该变量上的操作与其他内存操作一起重排序。volatile 变量不会被缓存在寄存器或者对其他处理器不可见的地方，JVM 保证了每次读变量都从内存中读，跳过 CPU cache 这一步，因此在读取 volatile 类型的变量时总会返回最新写入的值。
 
 ![](https://user-gold-cdn.xitu.io/2019/6/23/16b833f4a48b216e?w=550&h=429&f=png&s=21448)
@@ -827,7 +827,7 @@ AtomicInteger 中主要实现了整型的原子操作，防止并发情况下出
 
 # Atomic TODO
 
-# synchronized TODO 互斥锁
+# Synchronized TODO 对象锁 类锁 互斥锁
 当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码。
 
 在 Java 中，每个对象都会有一个 monitor 对象，这个对象其实就是 Java 对象的锁，通常会被称为“内置锁”或“对象锁”。类的对象可以有多个，所以每个对象有其独立的对象锁，互不干扰。针对每个类也有一个锁，可以称为“类锁”，类锁实际上是通过对象锁实现的，即类的 Class 对象锁。每个类只有一个 Class 对象，所以每个类只有一个类锁。
