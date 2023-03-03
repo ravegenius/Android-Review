@@ -1,53 +1,54 @@
 - [Activity](#activity)
   - [生命周期](#生命周期)
   - [启动模式](#启动模式)
-  - [启动过程](#启动过程)
+  - [启动过程](#启动过程) TODO 加强需要详解
 - [Fragment](#fragment)
   - [特点](#特点)
-  - [生命周期](#生命周期-1)
+  - [生命周期](#生命周期)
   - [与Activity通信](#与activity通信)
+  - [与Fragment通信](#与Fragment通信) TODO
 - [Service](#service)
-  - [启动过程](#启动过程-1)
-  - [绑定过程](#绑定过程)
-  - [生命周期](#生命周期-2)
-  - [启用前台服务](#启用前台服务)
+  - [启动过程](#启动过程) TODO 加强需要详解
+  - [绑定过程](#绑定过程) TODO 加强需要详解
+  - [生命周期](#生命周期)
+  - [启用前台服务](#启用前台服务) TODO 没懂？？？ 是启动一个Activity后再启动Service
 - [BroadcastReceiver](#broadcastreceiver)
-  - [注册过程](#注册过程)
+  - [注册过程](#注册过程) TODO 加强需要详解
 - [ContentProvider](#contentprovider)
   - [基本使用](#基本使用)
-- [数据存储](#数据存储)
+- [数据存储](#数据存储) TODO 不够详细
 - [View](#view)
-  - [MeasureSpec](#measurespec)
+  - [MeasureSpec](#measurespec) TODO 不够详细
   - [MotionEvent](#motionevent)
   - [VelocityTracker](#velocitytracker)
   - [GestureDetector](#gesturedetector)
   - [Scroller](#scroller)
   - [View 的滑动](#view-的滑动)
-  - [View 的事件分发](#view-的事件分发)
+  - [View 的事件分发](#view-的事件分发) TODO 不够详细
   - [在 Activity 中获取某个 View 的宽高](#在-activity-中获取某个-view-的宽高)
   - [Draw 的基本流程](#draw-的基本流程)
   - [自定义 View](#自定义-view)
 - [进程](#进程)
   - [进程生命周期](#进程生命周期)
   - [多进程](#多进程)
-  - [进程存活](#进程存活)
+  - [进程存活](#进程存活) TODO 重点加强
     - [OOM_ADJ](#oom_adj)
     - [进程被杀情况](#进程被杀情况)
     - [进程保活方案](#进程保活方案)
 - [Parcelable 接口](#parcelable-接口)
   - [使用示例](#使用示例)
   - [方法说明](#方法说明)
-  - [Parcelable 与 Serializable 对比](#parcelable-与-serializable-对比)
-- [IPC](#ipc)
+  - [Parcelable 与 Serializable 对比](#parcelable-与-serializable-对比) TODO marshalled &unmarshalled
+- [IPC](#ipc) TODO 重点加强 RPC是啥
   - [IPC方式](#ipc方式)
-  - [Binder](#binder)
+  - [Binder](#binder) TODO 重点加强 不太清楚Binder和IPC其他方式的关系
     - [流程](#流程)
   - [AIDL 通信](#aidl-通信)
   - [Messenger](#messenger)
 - [Window / WindowManager](#window--windowmanager)
   - [Window 概念与分类](#window-概念与分类)
   - [Window 的内部机制](#window-的内部机制)
-  - [Window 的创建过程](#window-的创建过程)
+  - [Window 的创建过程](#window-的创建过程) TODO 重点区别
     - [Activity 的 Window 创建过程](#activity-的-window-创建过程)
     - [Dialog 的 Window 创建过程](#dialog-的-window-创建过程)
     - [Toast 的 Window 创建过程](#toast-的-window-创建过程)
@@ -61,7 +62,7 @@
     - [Bitmap创建流程](#bitmap创建流程)
     - [Option类](#option类)
     - [基本使用](#基本使用-1)
-  - [内存回收](#内存回收)
+  - [内存回收](#内存回收)TODO为什么两部分存储
 - [屏幕适配](#屏幕适配)
   - [单位](#单位)
   - [头条适配方案](#头条适配方案)
@@ -75,7 +76,7 @@
   - [架构](#架构)
   - [apply / commit](#apply--commit)
   - [注意](#注意)
-- [消息机制](#消息机制)
+- [消息机制](#消息机制)TODO
   - [Handler 机制](#handler-机制)
   - [工作原理](#工作原理)
     - [ThreadLocal](#threadlocal)
@@ -89,15 +90,15 @@
   - [HandlerThread](#handlerthread)
   - [IntentService](#intentservice)
   - [线程池](#线程池)
-- [RecyclerView 优化](#recyclerview-优化)
-- [Webview](#webview)
+- [RecyclerView 优化](#recyclerview-优化)TODO RecycledViewPool
+- [Webview](#webview) TODO 原理各部分的作用
   - [基本使用](#基本使用-3)
     - [WebView](#webview-1)
     - [WebSettings](#websettings)
     - [WebViewClient](#webviewclient)
     - [WebChromeClient](#webchromeclient)
   - [Webview 加载优化](#webview-加载优化)
-  - [内存泄漏](#内存泄漏)
+  - [内存泄漏](#内存泄漏) TODO 加强
 # Activity
 ## 生命周期  
 ![](http://gityuan.com/images/lifecycle/activity.png)
@@ -885,12 +886,18 @@ IPC 即 Inter-Process Communication (进程间通信)。Android 基于 Linux，�
 > 在 Linux 系统中，虚拟内存机制为每个进程分配了线性连续的内存空间，操作系统将这种虚拟内存空间映射到物理内存空间，每个进程有自己的虚拟内存空间，进而不能操作其他进程的内存空间，只有操作系统才有权限操作物理内存空间。 进程隔离保证了每个进程的内存安全。
 
 ## IPC方式
+
+https://blog.csdn.net/weixin_51065489/article/details/126913951
+https://blog.csdn.net/weixin_51065489/article/details/126935830
+https://blog.csdn.net/weixin_51065489/article/details/127042408
+
+
 | 名称 | 优点 | 缺点 | 适用场景
 |----|-----|----|----
 | Bundle | 简单易用 | 只能传输 Bundle 支持的数据类型 | 四大组件间的进程间通信
 | 文件共享 | 简单易用 | 不适合高并发场景，并且无法做到进程间即时通信|无并发访问情形，交换简单的数据实时性不高的场景
 | AIDL |功能强大，支持一对多并发通信，支持实时通信 | 使用稍复杂，需要处理好线程同步 | 一对多通信且有 RPC 需求
-| Messenger | 功能一般，支持一对多串行通信，支持实时通信|不能很处理高并发清醒，不支持 RPC，数据通过 Message 进行传输，因此只能传输 Bundle 支持的数据类型|低并发的一对多即时通信，无RPC需求，或者无需返回结果的RPC需求
+| Messenger | 功能一般，支持一对多串行通信，支持实时通信|不能很好的处理高并发请求，不支持 RPC，数据通过 Message 进行传输，因此只能传输 Bundle 支持的数据类型|低并发的一对多即时通信，无RPC需求，或者无需返回结果的RPC需求
 | ContentProvider | 在数据源访问方面功能强大，支持一对多并发数据共享，可通过 Call 方法扩展其他操作|可以理解为受约束的 AIDL，主要提供数据源的 CRUD 操作 | 一对多的进程间数据共享
 | Socket | 可以通过网络传输字节流，支持一对多并发实时通信 | 实现细节稍微有点烦琐，不支持直接的RPC | 网络数据交换
 
