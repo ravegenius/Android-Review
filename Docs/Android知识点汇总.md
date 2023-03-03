@@ -76,7 +76,7 @@
   - [架构](#架构)
   - [apply / commit](#apply--commit)
   - [注意](#注意)
-- [消息机制](#消息机制)TODO
+- [消息机制](#消息机制) TODO 重点加强
   - [Handler 机制](#handler-机制)
   - [工作原理](#工作原理)
     - [ThreadLocal](#threadlocal)
@@ -894,7 +894,13 @@ IPC 即 Inter-Process Communication (进程间通信)。Android 基于 Linux，�
 https://blog.csdn.net/weixin_51065489/article/details/126913951
 
 ### IPC机制--Binder简介 TODO 需要加强
+
 https://blog.csdn.net/weixin_51065489/article/details/126935830
+
+加强介绍
+
+https://blog.csdn.net/ljx1400052550/article/details/115545382
+
 
 ### IPC机制--Android中的几种IPC方式
 https://blog.csdn.net/weixin_51065489/article/details/127042408
