@@ -887,8 +887,16 @@ IPC 即 Inter-Process Communication (进程间通信)。Android 基于 Linux，�
 
 ## IPC方式
 
+### IPC机制--基础知识
+- **IPC简介**
+- **Android多进程**
+- **IPC基础概念 Serializable 与 Parcelable**
 https://blog.csdn.net/weixin_51065489/article/details/126913951
+
+### IPC机制--Binder简介 TODO 需要加强
 https://blog.csdn.net/weixin_51065489/article/details/126935830
+
+### IPC机制--Android中的几种IPC方式
 https://blog.csdn.net/weixin_51065489/article/details/127042408
 
 
